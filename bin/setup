@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -x
+
+cd "$(dirname $0)/.."
+
+RUBY_VERSION="$(cat .ruby-version)"
+
+brew bundle
+test -d "$HOME/.rbenv/versions/$RUBY_VERSION" || rbenv install "$RUBY_VERSION"
+rbenv local "$RUBY_VERSION"
+gem install bundler -v "<2"
+bundle
+bundle exec rake db:setup
